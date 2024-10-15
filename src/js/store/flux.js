@@ -5,9 +5,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 		actions: {
 			loadContactList: () => {
-				fetch("https://playground.4geeks.com/apis/fake/contact/agenda/TS06")
-					.then((resp) => resp.json())
-					.then(data => setStore({ "contacts": data }));
+				fetch("https://playground.4geeks.com/contact/agendas/rdrgzfermin")
+					then((resp) => resp.json())
+					then(data => setStore({ "contacts": data }));
 			},
 			addContact: async (name, email, address, phone) => {
 				const newContact = {
@@ -18,8 +18,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					phone: phone,
 				};
 				try {
-					const response = await fetch("https://playground.4geeks.com/apis/fake/contact/", {
-						method: "POST", // Use POST to add a new contact
+					const response = await fetch("https://playground.4geeks.com/contact/agendas/rdrgzfermin", {
+						method: "POST",
 						headers: {
 							"Content-type": "application/json",
 						},
@@ -31,9 +31,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({
 							contacts: updatedContacts,
 						});
-						// Refresh the page
 						window.location.reload();
-						return updatedContacts; // Return the updated array of contacts
+						return updatedContacts;
 					} else {
 						console.error("Error adding contact: Unexpected status code", response.status);
 					}
