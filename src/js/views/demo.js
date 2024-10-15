@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { Context } from "../store/appContext";
@@ -8,34 +8,36 @@ import "../../styles/demo.css";
 export const Demo = () => {
 	const { store, actions } = useContext(Context);
 
-	useEffect(() => {
-		 actions.fetchContacts(); // Fetch on component mount 
-	}, []);
-
 	return (
 		<div className="container">
 			<ul className="list-group">
-				{store.contacts.map((contact, index) => {
+				{store.demo.map((item, index) => {
 					return (
 						<li
 							key={index}
-							className="list-group-item d-flex justify-content-between">
-							<span>{contact.name}</span>
-							<div>
-								<button className=" btn btn-warning" onClick={() => actions.updateContact(index, {...contact, name: "Updated Name" })}>Edit</button>
-								<button className=" btn btn-danger" onClick={() => actions.deleteContact(index)}>Delete</button>
-							</div>
-							</li>
-						);
-						})}
-						</ul>
-						<br />
-						<link to="/add-contact">
-							<button className="btn btn-primary">Add Contact</button>
-						</link>
-						<link to="/">
-							<button className="btn btn-secondary">Back Home</button>
-						</link>
-						</div>
-		);
-	};
+							className="list-group-item d-flex justify-content-between"
+							style={{ background: item.background }}>
+							<Link to={"/single/" + index}>
+								<span>Link to: {item.title}</span>
+							</Link>
+							{// Conditional render example
+							// Check to see if the background is orange, if so, display the message
+							item.background === "orange" ? (
+								<p style={{ color: item.initial }}>
+									Check store/flux.js scroll to the actions to see the code
+								</p>
+							) : null}
+							<button className="btn btn-success" onClick={() => actions.changeColor(index, "orange")}>
+								Change Color
+							</button>
+						</li>
+					);
+				})}
+			</ul>
+			<br />
+			<Link to="/">
+				<button className="btn btn-primary">Back home</button>
+			</Link>
+		</div>
+	);
+};
