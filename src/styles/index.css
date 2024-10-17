@@ -1,3 +1,20 @@
 /* 
     General Styles
 */
+.cardContact {
+    margin: 10px;
+}
+
+.contact-list{
+    margin: 10px;
+}
+img {
+    height: 150px;
+    width: 150px;
+}
+
+h2 {
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+}

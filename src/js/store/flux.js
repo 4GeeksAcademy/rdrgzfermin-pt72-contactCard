@@ -1,91 +1,109 @@
-// flux.js
-
 const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
-            contacts: [],
+            baseUrl: "https://playground.4geeks.com",
+            contactsList: [],
+
+
+
         },
         actions: {
-            fetchContacts: async () => {
-                try {
-                    const slug = "ContactLists"; // Fixed slug for the agenda
-                    const response = await fetch(`https://playground.4geeks.com/contact/agendas/${slug}/contacts`);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
+
+            getContactList: () => {
+                const { baseUrl } = getStore()
+                fetch(`${baseUrl}/contact/agendas/rdrgzfermin`)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json();
+                    })
+                    .then((responseJson) => setStore({ contactsList: responseJson.contacts })) /* cambiarsetTodos */
+                    .catch((error) => console.log("Error fetching:", error));
+            },
+            addContact: (newContact) => {
+                const options = {
+                    method: 'POST',
+                    body: JSON.stringify(newContact),
+                    headers: {
+                        'Content-Type': 'application/json'
                     }
-                    const data = await response.json();
-                    setStore({ contacts: data.contacts }); // Assuming 'contacts' is the key in the returned JSON
-                } catch (error) {
-                    console.error("Error fetching contacts:", error);
                 }
+                const { baseUrl, contactsList } = getStore()
+                fetch(`${baseUrl}/contact/agendas/rdrgzfermin/contacts`, options)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("Failed to save");
+                        }
+                        return response.json();
+                    })
+                    .then((responseJson) => setStore({ contactsList: [...contactsList, responseJson] }))
+                    .catch((error) => console.log(" Error saving", error))
             },
-
-            addContact: (contact) => {
-                const store = getStore();
-                setStore({ contacts: [...store.contacts, contact] });
-
-                // Assuming you want to add the contact to the server as well
-                const slug = "ContactLists"; // Fixed slug for the agenda
-                fetch(`https://playground.4geeks.com/contact/agendas/${slug}/contacts`, {
-                    method: "POST",
+            updateContact: (contact, id) => {
+                const options = {
+                    method: 'PUT',
+                    body: JSON.stringify(contact),
                     headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(contact)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Contact added:", data);
-                    // You can also update the state with the response if needed
-                })
-                .catch(error => console.error("Error adding contact:", error));
-            },
-
-            updateContact: (index, updatedContact) => {
-                const store = getStore();
-                const contacts = store.contacts.map((contact, i) =>
-                    i === index ? updatedContact : contact
-                );
-                setStore({ contacts: contacts });
-
-                // If you want to update the contact on the server:
-                const slug = "ContactLists"; // Fixed slug for the agenda
-                const contactId = updatedContact.id; // Assuming each contact has an ID
-                fetch(`https://playground.4geeks.com/contact/agendas/${slug}/contacts/${contactId}`, {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(updatedContact)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Contact updated:", data);
-                })
-                .catch(error => console.error("Error updating contact:", error));
-            },
-
-            deleteContact: (index) => {
-                const store = getStore();
-                const contacts = store.contacts.filter((_, i) => i !== index);
-                setStore({ contacts: contacts });
-
-                // If you want to delete the contact on the server:
-                const slug = "ContactLists"; // Fixed slug for the agenda
-                const contactId = store.contacts[index].id; // Assuming each contact has an ID
-                fetch(`https://playground.4geeks.com/contact/agendas/${slug}/contacts/${contactId}`, {
-                    method: "DELETE"
-                })
-                .then(response => {
-                    if (response.ok) {
-                        console.log("Contact deleted");
-                    } else {
-                        throw new Error("Failed to delete contact");
+                        'Content-Type': 'application/json'
                     }
-                })
-                .catch(error => console.error("Error deleting contact:", error));
+                }
+                const { baseUrl, contactsList } = getStore()
+                fetch(`${baseUrl}/contact/agendas/rdrgzfermin/contacts/${id}`, options)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("Failed to update");
+                        }
+                        return response.json();
+                    })
+                    .then((responseJson) => {
+                        getActions().getContactList()
+                    })
+                    .catch((error) => console.log(" Error updating contact", error))
             },
-        },
+            deleteContact: (id) => {
+                const options = {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+                const { baseUrl, contactsList } = getStore()
+                fetch(`${baseUrl}/contact/agendas/rdrgzfermin/contacts/${id}`, options)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("Failed to delete")
+                        } else {
+                            setStore({ contactsList: contactsList.filter((contact) => contact.id !== id) });
+                        }
+
+                    })
+                    .catch((error) => console.log("Error deleting todo:", error))
+            },
+            handleSubmit: (e) => {
+                e.preventDefault();
+                const newContact = {
+                    name: e.target.name.value,
+                    phone: e.target.phone.value,
+                    email: e.target.email.value,
+                    address: e.target.address.value
+                }
+                const actions = getActions()
+                actions.addContact(newContact);
+            },
+            handleUpdate: (e, id) => {
+                e.preventDefault();
+                const updateContact = {
+                    name: e.target.name.value,
+                    phone: e.target.phone.value,
+                    email: e.target.email.value,
+                    address: e.target.address.value
+                }
+                const actions = getActions()
+                actions.updateContact(updateContact, id);
+            },
+
+        }
     };
 };
 
