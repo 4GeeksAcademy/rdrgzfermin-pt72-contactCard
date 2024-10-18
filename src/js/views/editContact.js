@@ -29,7 +29,7 @@ export const EditContact = () => {
                     <label for="exampleInputEmail" className="form-label">Address</label>
                     <input type="text" className="form-control" id="address" name="address" aria-placeholder="Enter address" />
                     <Link to="/">
-                        <small className="form-text link-primary">or get back to contacts</small>
+                        <small className="form-text link-primary">back to contacts</small>
                     </Link>
                 </div>
                 <div className="d-grid gap-2">
