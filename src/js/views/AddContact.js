@@ -8,7 +8,7 @@ export const AddContact = () => {
 	const {store,actions} = useContext(Context)
 
 	return (
-		<div className="container">
+		<div className="container mt-4">
 			<h2>Add a new contact</h2>
 			<form onSubmit={actions.handleSubmit}>
 				<div className="mb-3">
