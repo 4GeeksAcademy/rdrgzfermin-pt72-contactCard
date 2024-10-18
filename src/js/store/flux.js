@@ -18,7 +18,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         }
                         return response.json();
                     })
-                    .then((responseJson) => setStore({ contactsList: responseJson.contacts })) /* cambiarsetTodos */
+                    .then((responseJson) => setStore({ contactsList: responseJson.contacts }))
                     .catch((error) => console.log("Error fetching:", error));
             },
             addContact: (newContact) => {
