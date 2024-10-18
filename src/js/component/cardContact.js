@@ -13,6 +13,7 @@ export const CardContact = ({ contact }) => {
 
 					<img src="https://picsum.photos/id/64/200" className="img-fluid rounded-circle" alt="..." />
 
+					
 					<div className="ms-3 w-100">
 						<h5>{contact?.name}</h5>
 						<div className="text-muted">

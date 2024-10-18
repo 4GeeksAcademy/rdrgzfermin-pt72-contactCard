@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/index.css";
-import { CardContact } from "../component/CardContact";
+import { CardContact } from "../component/cardContact";
 import { Context } from "../store/appContext";
 
 export const Contact = () => {
