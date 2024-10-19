@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { Contact } from "./views/Contact";
-import { AddContact } from "./views/AddContact";
+import { AddContact } from "./component/AddContact";
 import injectContext, { Context } from "./store/appContext";
-import { EditContact } from "./views/editContact";
+import { EditContact } from "./component/editContact";
 
 
 //create your first component
