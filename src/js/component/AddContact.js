@@ -33,7 +33,7 @@ export const AddContact = () => {
 					</Link>
 				</div>
 				<div className="d-grid gap-2">
-					<button type="submit" className="btn btn-primary" onClick={() => actions.addContact(newContact)}>Save</button>
+					<button type="submit" className="btn btn-primary" onClick={() => actions.addC(newContact)}>Save</button>
 				</div>
 
 			</form>
