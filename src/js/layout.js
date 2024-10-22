@@ -4,12 +4,12 @@ import ScrollToTop from "./component/scrollToTop";
 
 import { Home } from "./views/home";
 
-import { Single } from "./views/single";
+/*import { Single } from "./views/single";*/
 import injectContext from "./store/appContext";
 import { AddContact } from "./views/addContact.js";
 import EditContact  from "./views/editContact.js";
-import { Navbar } from "./component/navbar";
-import { Footer } from "./component/footer";
+/*import { Navbar } from "./component/navbar";
+import { Footer } from "./component/footer";*/
 
 //create your first component
 const Layout = () => {
