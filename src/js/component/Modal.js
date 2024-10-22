@@ -16,8 +16,8 @@ const Modal = ({ closeModal, confirmDelete }) => {
                         <p>If you delete this, the entire universe will go down!</p>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" onClick={closeModal}>oh no!</button>
-                        <button type="button" className="btn btn-primary" onClick={confirmDelete}>yes baby!</button>
+                        <button type="button" className="btn btn-secondary" onClick={closeModal}>Cancel</button>
+                        <button type="button" className="btn btn-primary" onClick={confirmDelete}>Delete</button>
                     </div>
                 </div>
             </div>

@@ -98,7 +98,7 @@ export const AddContact = () => {
                     Save
                 </button>
             </form>
-            <a href="/">Or get back to contacts</a>
+            <a href="/">back to contacts</a>
         </div>
     )
 
