@@ -6,7 +6,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		};
 
 		const fetchContacts = () => {
-			fetch("https://playground.4geeks.com/contact/agendas/GaretKean/contacts")
+			fetch("https://playground.4geeks.com/contact/agendas/rdrgzfermin/contacts")
 			.then(handleResponse)
 			.then((data) => {
 				console.log("fetched contact data: ", data);
@@ -27,7 +27,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 		}
 		const addAgendaSlug = () => {
-			fetch("https://playground.4geeks.com/contact/agendas/GaretKean", {
+			fetch("https://playground.4geeks.com/contact/agendas/rdrgzfermin", {
 				method: "POST",
 				headers: {"Content-Type": "application/json"},
 				body: JSON.stringify({})
@@ -47,7 +47,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getContacts: fetchContacts,
 
 			addContacts: (contactData) => {
-				fetch("https://playground.4geeks.com/contact/agendas/GaretKean/contacts", {
+				fetch("https://playground.4geeks.com/contact/agendas/rdrgzfermin/contacts", {
 					method: "POST",
 					headers: {"Content-Type": "application/json"},
 					body: JSON.stringify(contactData)
@@ -57,7 +57,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch((error) => console.error("Adding contact failed", error));
 			},
 			deleteContacts: (id) => {
-				fetch(`https://playground.4geeks.com/contact/agendas/GaretKean/contacts/${id}`, {
+				fetch(`https://playground.4geeks.com/contact/agendas/rdrgzfermin/contacts/${id}`, {
 					method: "DELETE"
 					
 				})
@@ -67,7 +67,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			editContacts: (id, contactData) => {
-				fetch(`https://playground.4geeks.com/contact/agendas/GaretKean/contacts/${id}`, {
+				fetch(`https://playground.4geeks.com/contact/agendas/rdrgzfermin/contacts/${id}`, {
 					method: "PUT",
 					headers: {"Content-Type": "application/json"},
 					body: JSON.stringify(contactData)
