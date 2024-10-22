@@ -1,110 +1,85 @@
 const getState = ({ getStore, getActions, setStore }) => {
-    return {
-        store: {
-            baseUrl: "https://playground.4geeks.com",
-            contactsList: [],
+
+	const handleResponse = (response) => {
+		if (!response.ok) throw Error(response.statusText);
+			return response.text().then(text => text ? JSON.parse(text) : {} )
+		};
+
+		const fetchContacts = () => {
+			fetch("https://playground.4geeks.com/contact/agendas/GaretKean/contacts")
+			.then(handleResponse)
+			.then((data) => {
+				console.log("fetched contact data: ", data);
+				if (Array.isArray(data.contacts)){
+					setStore({ contacts: data.contacts });
+					console.log("Contacts set in store: ", data.contacts) 	
+				} else {
+					console.error("fetched data is not an array", data);
+					setStore({ contacts: [] })
+				}
+				
+			})
+			.catch((error) => {
+				console.error("fetching contacts error: ", error );
+				addAgendaSlug();
+			})
 
 
+		}
+		const addAgendaSlug = () => {
+			fetch("https://playground.4geeks.com/contact/agendas/GaretKean", {
+				method: "POST",
+				headers: {"Content-Type": "application/json"},
+				body: JSON.stringify({})
+			})
+				.then(handleResponse)
+				.then((data) => {
+					console.log("agenda added successfully ", data);
+					fetchContacts();
+				}) 
+				.catch((error) => console.error("Adding agenda slug failed", error));
+		}
+	return {
+		store: {
+			contacts: []
+		},
+		actions: {
+			getContacts: fetchContacts,
 
-        },
-        actions: {
+			addContacts: (contactData) => {
+				fetch("https://playground.4geeks.com/contact/agendas/GaretKean/contacts", {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify(contactData)
+				})
+					.then(handleResponse)
+					.then(() => fetchContacts()) 
+					.catch((error) => console.error("Adding contact failed", error));
+			},
+			deleteContacts: (id) => {
+				fetch(`https://playground.4geeks.com/contact/agendas/GaretKean/contacts/${id}`, {
+					method: "DELETE"
+					
+				})
+					.then(handleResponse)
+					.then(() => fetchContacts()) 
+					.catch((error) => console.error("Error deleting contact", error));
+			},
 
-            getContactList: () => {
-                const { baseUrl } = getStore()
-                fetch(`${baseUrl}/contact/agendas/rdrgzfermin`)
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error("Network response was not ok");
-                        }
-                        return response.json();
-                    })
-                    .then((responseJson) => setStore({ contactsList: responseJson.contacts }))
-                    .catch((error) => console.log("Error fetching:", error));
-            },
-            addContact: (newContact) => {
-                const options = {
-                    method: 'POST',
-                    body: JSON.stringify(newContact),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-                const { baseUrl, contactsList } = getStore()
-                fetch(`${baseUrl}/contact/agendas/rdrgzfermin/contacts`, options)
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error("Failed to save");
-                        }
-                        return response.json();
-                    })
-                    .then((responseJson) => setStore({ contactsList: [...contactsList, responseJson] }))
-                    .catch((error) => console.log(" Error saving", error))
-            },
-            updateContact: (contact, id) => {
-                const options = {
-                    method: 'PUT',
-                    body: JSON.stringify(contact),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-                const { baseUrl, contactsList } = getStore()
-                fetch(`${baseUrl}/contact/agendas/rdrgzfermin/contacts/${id}`, options)
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error("Failed to update");
-                        }
-                        return response.json();
-                    })
-                    .then((responseJson) => {
-                        getActions().getContactList()
-                    })
-                    .catch((error) => console.log(" Error updating contact", error))
-            },
-            deleteContact: (id) => {
-                const options = {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-                const { baseUrl, contactsList } = getStore()
-                fetch(`${baseUrl}/contact/agendas/rdrgzfermin/contacts/${id}`, options)
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error("Failed to delete")
-                        } else {
-                            setStore({ contactsList: contactsList.filter((contact) => contact.id !== id) });
-                        }
+			editContacts: (id, contactData) => {
+				fetch(`https://playground.4geeks.com/contact/agendas/GaretKean/contacts/${id}`, {
+					method: "PUT",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify(contactData)
+				})
+					.then(handleResponse)
+					.then(() => fetchContacts()) 
+					.catch((error) => console.error("Updating contact failed", error));
+			},
 
-                    })
-                    .catch((error) => console.log("Error deleting todo:", error))
-            },
-            handleSubmit: (e) => {
-                e.preventDefault();
-                const newContact = {
-                    name: e.target.name.value,
-                    phone: e.target.phone.value,
-                    email: e.target.email.value,
-                    address: e.target.address.value
-                }
-                const actions = getActions()
-                actions.addContact(newContact);
-            },
-            handleUpdate: (e, id) => {
-                e.preventDefault();
-                const updateContact = {
-                    name: e.target.name.value,
-                    phone: e.target.phone.value,
-                    email: e.target.email.value,
-                    address: e.target.address.value
-                }
-                const actions = getActions()
-                actions.updateContact(updateContact, id);
-            },
-
-        }
-    };
+			addAgendaSlug: addAgendaSlug
+		}
+	};
 };
 
 export default getState;
