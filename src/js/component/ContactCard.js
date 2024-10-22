@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Modal from "./Modal"
 
-/*import svgimg from "../../img/user.256x256.png"
-import { MdDeleteForever } from "react-icons/md";
+import svgimg from "../../img/user.256x256.png"
+/* import { MdDeleteForever } from "react-icons/md";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import { FaPhoneAlt } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";*/
+import { MdEmail } from "react-icons/md"; */
 
 
 
